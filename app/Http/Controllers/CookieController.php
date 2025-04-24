@@ -1,0 +1,136 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Guest;
+use Illuminate\Http\Request;
+use App\Http\Requests\CookieRequest;
+use App\Models\Cookie as DBCookie;
+use Illuminate\Support\Facades\Cookie;
+use Carbon\Carbon;
+use function Laravel\Prompts\error;
+use function PHPUnit\Framework\isEmpty;
+use App\Http\Controllers\GuestController;
+use Illuminate\Support\Facades\Log;
+
+class CookieController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    private function calculateCookieLifespan($date){
+        if(isEmpty($date)){
+            $lifespan = 0;
+        } else if(Carbon::parse($date)->isValid()){
+            $lifespan = now()->diffInMinutes(Carbon::parse($date), false);
+            if($lifespan <= 0){
+                $lifespan = 0;
+            }
+        } else {
+            $lifespan = 60;
+        }
+        return $lifespan;
+    }
+    public function store(CookieRequest $request)
+    {
+        $validated = $request->validated();
+        try {
+            $cookie = DBCookie::create($validated);
+
+            // If there is guest name
+            $guest = null;
+            if($request->has('guest')){
+                $GuestRequest = $request->all();
+                $GuestRequest['name'] = $request['guest'];
+                unset($GuestRequest['guest'], $GuestRequest['value']);
+
+                $GuestRequest['cookie_id'] = $cookie->id;
+
+                $GuestController = new GuestController();
+                $guest = $GuestController->store(new Request($GuestRequest));
+
+                if($guest instanceof Guest && $guest->exists){
+                    return response()->json([
+                        'cookie' => $cookie ? true : false,
+                        'message' => 'Successfully created guest!',
+                    ], 201);
+                }
+
+                $guest = false; // Means that Guest creation was requested but not succeeded
+            }
+
+            // Create Cookie in the Browser
+            Cookie::queue($validated['name'], $validated['value'], $this->calculateCookieLifespan($validated['expires_at'] ?? 0));
+
+
+            // If Guest isn't created then return this response
+            $response = [
+                'message' => 'Cookie added successfully',
+                'cookie' => $cookie
+            ];
+            if($guest === false){ // === Confirmed that Guest creation has been failed
+                $response['guest'] = false;
+            }
+            return response()->json($response, 201);
+
+        } catch (\Exception $e){
+            Log:error("Cookie Creation: " . $e->getMessage());
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $name)
+    {
+        $cookie_name = $name;
+        $cookie_value = Cookie::get($cookie_name);
+        $db_cookie = DBCookie::where([
+            ['name', '=', $cookie_name],
+            ['value', '=', $cookie_value]
+        ])->first();
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}
