@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\Cookie as DBCookie;
 use Illuminate\Support\Facades\Http;
+use function PHPUnit\Framework\isEmpty;
 
 class GuestCookie
 {
@@ -26,6 +27,7 @@ class GuestCookie
             ['value', '=', $cookie_value]
         ])->first();
 
+
         if(!$db_cookie){
             $new_cookie_value =  Str::uuid()->toString();
             $response = Http::withHeaders([
@@ -34,15 +36,15 @@ class GuestCookie
             ])->post(route('cookie.store'), [
                 'name' => $cookie_name,
                 'value' => $new_cookie_value,
+                'guest' => $request->input('guest')
             ]);
 
             if(!$response->successful()){
                 return response()->json([
+                    'type' => 'error',
                     'error' => 'Failed to create cookie'
                 ], 500);
             }
-
-
         }
 
         return $next($request);

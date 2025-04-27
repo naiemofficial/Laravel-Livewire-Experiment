@@ -103,11 +103,13 @@ class CookieController extends Controller
     public function show(string $name)
     {
         $cookie_name = $name;
-        $cookie_value = Cookie::get($cookie_name);
+        $cookie_value = 'test'; // Cookie::get($cookie_name);
         $db_cookie = DBCookie::where([
             ['name', '=', $cookie_name],
             ['value', '=', $cookie_value]
         ])->first();
+
+        dd($db_cookie->guest()->name);
     }
 
     /**

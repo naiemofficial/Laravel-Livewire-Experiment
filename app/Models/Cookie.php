@@ -12,4 +12,12 @@ class Cookie extends Model
         'value',
         'expires_at'
     ];
+
+    public function user(){
+        return $this->hasMany(Guest::class, 'cookie_id')->first();
+    }
+
+    public function guest(){
+        return $this->user();
+    }
 }
