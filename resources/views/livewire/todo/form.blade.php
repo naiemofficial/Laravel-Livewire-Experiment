@@ -1,11 +1,11 @@
 <div>
     <form class="space-y-6 w-full">
         <!-- Title Field -->
-        <input type="text" class="w-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#fb70a9] text-sm bg-white border rounded-sm border-gray-300 px-4 py-3" placeholder="Title"/>
+        <input type="text" wire:model="title" class="w-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#fb70a9] text-sm bg-white border rounded-sm border-gray-300 px-4 py-3" placeholder="Title"/>
 
 
         <!-- Description Field -->
-        <textarea class="w-full h-[100px] text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#fb70a9] text-sm bg-white border rounded-sm border-gray-300 px-4 py-3" placeholder="Description"></textarea>
+        <textarea wire:model="description" class="w-full h-[100px] text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#fb70a9] text-sm bg-white border rounded-sm border-gray-300 px-4 py-3" placeholder="Description"></textarea>
 
         <!-- Submit Button -->
         <div class="w-full">
@@ -19,7 +19,12 @@
         </div>
     </form>
 
-    @if (session('success'))
-        @include('message.success', ['message' => session('success')])
-    @endif
+
+    @foreach(session()->all() as $key => $message)
+        @if(in_array($key, ['success', 'error', 'info', 'warning']))
+            @include("message.$key", ['message' => $message])
+        @endif
+    @endforeach
+
+
 </div>

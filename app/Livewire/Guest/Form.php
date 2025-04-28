@@ -2,34 +2,36 @@
 
 namespace App\Livewire\Guest;
 
+use App\Http\Controllers\GuestController;
 use App\Http\Middleware\GuestCookie;
-use App\Models\Cookie as DBCookie;
-use Illuminate\Support\Facades\Cookie;
+use App\Models\Guest;
 use Livewire\Component;
 
 class Form extends Component
 {
     public $name;
+    public $isValidGuest;
+    public $currentGuest;
     public function store(){
-        $guest_name = $this->name;
-        request()->merge(['guest' => $guest_name]);
-        $GuestCookie = new GuestCookie(request());
-
+        $this->isValidGuest = Guest::isValid();
+        if($this->isValidGuest){
+            // Update
+            request()->merge(['name' => $this->name]);
+            app(GuestController::class)->update(request(), Guest::current());
+        } else {
+            // Add as new
+            request()->merge(['guest' => $this->name]);
+            $GuestCookie = new GuestCookie();
+            $response = $GuestCookie->handle(request(), fn($request) => $request);
+        }
     }
     public function render()
     {
-        $cookie_name = 'guest_session';
-        $cookie_value = Cookie::get($cookie_name);
-        $db_cookie = DBCookie::where([
-            ['name', '=', $cookie_name],
-            ['value', '=', $cookie_value]
-        ])->first();
+        $this->currentGuest = Guest::current();
 
-        if(!empty($db_cookie)){
-            $this->name = $db_cookie?->guest()?->name ?? '';
+        if($this->currentGuest instanceof Guest){
+            $this->name = $this->currentGuest->name;
         }
-
-
         return view('livewire.guest.form');
     }
 }

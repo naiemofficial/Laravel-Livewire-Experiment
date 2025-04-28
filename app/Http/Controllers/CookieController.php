@@ -53,41 +53,40 @@ class CookieController extends Controller
         try {
             $cookie = DBCookie::create($validated);
 
-            // If there is guest name
-            $guest = null;
+            // If there is a 'guest' name
             if($request->has('guest')){
                 $GuestRequest = $request->all();
+                $GuestRequest['cookie_id'] = $cookie->id;
+
+                // Attributes refactor
                 $GuestRequest['name'] = $request['guest'];
                 unset($GuestRequest['guest'], $GuestRequest['value']);
 
-                $GuestRequest['cookie_id'] = $cookie->id;
+
 
                 $GuestController = new GuestController();
-                $guest = $GuestController->store(new Request($GuestRequest));
+                $response = $GuestController->store(new Request($GuestRequest));
 
-                if($guest instanceof Guest && $guest->exists){
+                if($response->isSuccessful()){
+                    // Create Cookie in the Browser
+                    Cookie::queue($validated['name'], $validated['value'], $this->calculateCookieLifespan($validated['expires_at'] ?? 0));
                     return response()->json([
+                        'type' => 'success',
                         'cookie' => $cookie ? true : false,
                         'message' => 'Successfully created guest!',
                     ], 201);
+                } else {
+                    $cookie->delete(); // Delete the created cookie since Guest creation is failed!
+                    return $response;
                 }
-
-                $guest = false; // Means that Guest creation was requested but not succeeded
             }
 
             // Create Cookie in the Browser
             Cookie::queue($validated['name'], $validated['value'], $this->calculateCookieLifespan($validated['expires_at'] ?? 0));
-
-
-            // If Guest isn't created then return this response
-            $response = [
+            return response()->json([
                 'message' => 'Cookie added successfully',
                 'cookie' => $cookie
-            ];
-            if($guest === false){ // === Confirmed that Guest creation has been failed
-                $response['guest'] = false;
-            }
-            return response()->json($response, 201);
+            ], 201);
 
         } catch (\Exception $e){
             Log:error("Cookie Creation: " . $e->getMessage());

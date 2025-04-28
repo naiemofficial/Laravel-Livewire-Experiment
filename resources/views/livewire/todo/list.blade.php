@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                        <p class="text-sm/6 text-gray-900">Co-Founder / CEO</p>
+                        <p class="text-sm/6 text-gray-900">{{ $todo?->guest?->name ?? 'N/A' }}</p>
                         <p class="mt-1 text-xs/5 text-gray-500">{{ $todo->created_at->diffForHumans() }}</time></p>
                     </div>
                 </li>

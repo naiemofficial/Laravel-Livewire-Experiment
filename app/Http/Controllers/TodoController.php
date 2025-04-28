@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guest;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        
+
         return view('todo.index');
     }
 
@@ -29,7 +30,20 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $validatedData = $request->validate([
+                'title' => ['required', 'string', 'max:255'],
+                'description' => ['required', 'string'],
+                'guest_id' => ['required', 'integer'],
+            ]);
+
+            Todo::create($validatedData);
+            return response()->json(['key' => 'success', 'message' => 'Todo created successfully.'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['key' => 'error', 'message' => $e->getMessage()], 500);
+        }
+
+
     }
 
     /**

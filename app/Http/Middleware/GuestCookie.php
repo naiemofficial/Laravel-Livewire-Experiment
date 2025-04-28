@@ -2,6 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\CookieController;
+use App\Http\Requests\CookieRequest;
+use App\Models\Guest;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -20,31 +23,20 @@ class GuestCookie
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $cookie_name = 'guest_session';
-        $cookie_value = Cookie::get($cookie_name);
-        $db_cookie = DBCookie::where([
-            ['name', '=', $cookie_name],
-            ['value', '=', $cookie_value]
-        ])->first();
-
-
-        if(!$db_cookie){
-            $new_cookie_value =  Str::uuid()->toString();
-            $response = Http::withHeaders([
-                'X-CSRF-TOKEN' => csrf_token(),
-                'Accept' => 'application/json'
-            ])->post(route('cookie.store'), [
-                'name' => $cookie_name,
-                'value' => $new_cookie_value,
-                'guest' => $request->input('guest')
+        // Generate new Guest if current Guest isn't registered or not valid
+        if(!Guest::isValid()){
+            // Prepare CookieRequest
+            $new_cookie_value = Str::uuid()->toString();
+            $request->merge([
+                'name' => Guest::$cookie_name,
+                'value' => $new_cookie_value
             ]);
+            $CookieRequest = app(CookieRequest::class);
+            $CookieRequest->merge($request->all());
 
-            if(!$response->successful()){
-                return response()->json([
-                    'type' => 'error',
-                    'error' => 'Failed to create cookie'
-                ], 500);
-            }
+            // New CookieController Instance
+            $CookieController = new CookieController();
+            return $CookieController->store($CookieRequest);
         }
 
         return $next($request);

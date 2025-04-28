@@ -9,7 +9,7 @@
                     wire:click="store"
                     class="ml-2 bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm cursor-pointer"
                 >
-                    Submit
+                    {{ ($isValidGuest ? 'Update' : 'Submit') }}
                 </button>
             </div>
         </div>

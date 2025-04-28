@@ -37,16 +37,16 @@ class GuestController extends Controller
             ]);
 
             $guest = Guest::create($validated);
-            if(array_key_exists('cookie_id', $validated)){
-                return $guest;
-            }
 
             return response()->json([
-                'message' => 'Successfully created guest!'
+                'key' => 'success',
+                'message' => 'Successfully created guest!',
+                'guest' => $guest
             ], 201);
         } catch (\Exception $e){
             return response()->json([
-                'error' => $e->getMessage()
+                'key' => 'error',
+                'message' => $e->getMessage()
             ], 500);
         }
     }
@@ -72,7 +72,10 @@ class GuestController extends Controller
      */
     public function update(Request $request, Guest $guest)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['string', 'required', 'max:255'],
+        ]);
+        Guest::where('id', $guest->id)->update($validated);
     }
 
     /**

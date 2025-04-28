@@ -2,22 +2,32 @@
 
 namespace App\Livewire\Todo;
 
-use App\Http\Middleware\GuestCookie;
-use App\Models\Todo;
+use App\Http\Controllers\TodoController;
+use App\Models\Guest;
 use Livewire\Component;
 
 class Form extends Component
 {
+    public $title;
+    public $description;
     public function store()
     {
-        $GuestCookie = new GuestCookie();
 
-        Todo::create([
-            'title' => 'Test Title',
-            'description' => 'Test Description',
-        ]);
+        $guestId = Guest::current() ? Guest::current()->id : null;
 
-        session()->flash('success', 'Todo added successfully!');
+        $requestData = [
+            'title' => $this->title,
+            'description' => $this->description,
+            'guest_id' => $guestId
+        ];
+
+        // Merge data into the request
+        request()->merge($requestData);
+
+
+        // Call the controller's store method with the current request
+        $response = app(TodoController::class)->store(request());
+        session()->flash($response->getData()->key, $response->getData()->message);
 
         $this->dispatch('todo-created');
     }

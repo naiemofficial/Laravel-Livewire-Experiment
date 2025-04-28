@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cookie as CookieFacade;
 
 class Cookie extends Model
 {
@@ -19,5 +20,13 @@ class Cookie extends Model
 
     public function guest(){
         return $this->user();
+    }
+
+    public static function local($name = ''){
+        return CookieFacade::get($name);
+    }
+
+    public function current(string $cookie_name, string $cookie_value){
+        return $this->where('name', $cookie_name)->update(['value' => $cookie_value])->first();
     }
 }
