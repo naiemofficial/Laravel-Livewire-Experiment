@@ -49,41 +49,14 @@ class CookieController extends Controller
     }
     public function store(CookieRequest $request)
     {
-        $validated = $request->validated();
         try {
+            $validated = $request->validated();
             $cookie = DBCookie::create($validated);
-
-            // If there is a 'guest' name
-            if($request->has('guest')){
-                $GuestRequest = $request->all();
-                $GuestRequest['cookie_id'] = $cookie->id;
-
-                // Attributes refactor
-                $GuestRequest['name'] = $request['guest'];
-                unset($GuestRequest['guest'], $GuestRequest['value']);
-
-
-
-                $GuestController = new GuestController();
-                $response = $GuestController->store(new Request($GuestRequest));
-
-                if($response->isSuccessful()){
-                    // Create Cookie in the Browser
-                    Cookie::queue($validated['name'], $validated['value'], $this->calculateCookieLifespan($validated['expires_at'] ?? 0));
-                    return response()->json([
-                        'type' => 'success',
-                        'cookie' => $cookie ? true : false,
-                        'message' => 'Successfully created guest!',
-                    ], 201);
-                } else {
-                    $cookie->delete(); // Delete the created cookie since Guest creation is failed!
-                    return $response;
-                }
-            }
 
             // Create Cookie in the Browser
             Cookie::queue($validated['name'], $validated['value'], $this->calculateCookieLifespan($validated['expires_at'] ?? 0));
             return response()->json([
+                'key' => 'success',
                 'message' => 'Cookie added successfully',
                 'cookie' => $cookie
             ], 201);
@@ -91,6 +64,7 @@ class CookieController extends Controller
         } catch (\Exception $e){
             Log:error("Cookie Creation: " . $e->getMessage());
             return response()->json([
+                'key' => 'error',
                 'message' => $e->getMessage()
             ], 500);
         }

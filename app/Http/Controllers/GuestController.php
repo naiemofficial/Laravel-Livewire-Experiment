@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GuestRequest;
 use App\Models\Guest;
 use Illuminate\Http\Request;
 use App\Models\Cookie as DBCookie;
@@ -28,20 +29,18 @@ class GuestController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(GuestRequest $request)
     {
         try {
-            $validated = $request->validate([
-                'name' => ['string', 'required', 'max:255'],
-                'cookie_id' => ['numeric', Rule::exists(DBCookie::class, 'id')],
-            ]);
-
-            $guest = Guest::create($validated);
+            $Guest = Guest::create($request->validated());
 
             return response()->json([
                 'key' => 'success',
                 'message' => 'Successfully created guest!',
-                'guest' => $guest
+                'guest' => [
+                    'id' => $Guest->id,
+                    'name' => $Guest->name,
+                ]
             ], 201);
         } catch (\Exception $e){
             return response()->json([

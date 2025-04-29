@@ -15,25 +15,28 @@ class Guest extends Model
     }
 
 
-    public static function isValid(): bool
+    public static function isValid(string $cookie_value = null): bool
     {
-        $cookie = Cookie::where('name', static::$cookie_name)
-            ->where('value', Cookie::local(static::$cookie_name))
+        $cookie_value = $cookie_value ?? Cookie::local(self::$cookie_name);
+        $cookie = Cookie::where('name', self::$cookie_name)
+            ->where('value', $cookie_value)
             ->first();
 
-        return ($cookie != null && $cookie->guest() instanceof Guest);
+        $Guest =  $cookie?->guest();
+        return ($cookie != null && $Guest instanceof Guest);
     }
 
 
 
-    public static function current()
+    public static function current(string $cookie_value = null)
     {
-        $cookie_value = Cookie::local(static::$cookie_name);
-        $cookie = Cookie::where('name', static::$cookie_name)
+        $cookie_value = $cookie_value ?? Cookie::local(self::$cookie_name);
+        $cookie = Cookie::where('name', self::$cookie_name)
             ->where('value', $cookie_value)
             ->first();
 
-        if($cookie && $cookie->guest() instanceof Guest){
+        $Guest = $cookie?->guest();
+        if($Guest instanceof Guest){
             return $cookie->guest();
         }
 

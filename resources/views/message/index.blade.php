@@ -1,12 +1,40 @@
-<div x-data="{ show: false, element: $el }"
-     x-init="setTimeout(() => show = true, 100); setTimeout(() => show = false, 3100); setTimeout(() => element.remove(), 3500)"
-     x-show="show"
-     x-transition:enter="transition ease-out duration-300 opacity-0 transform -translate-x-4"
-     x-transition:enter-start="opacity-0 transform -translate-x-4"
-     x-transition:enter-end="opacity-100 transform translate-x-0"
-     x-transition:leave="transition ease-in duration-400 opacity-0 transform translate-x-4"
-     x-transition:leave-start="opacity-100 transform translate-x-0"
-     x-transition:leave-end="opacity-0 transform translate-x-4"
-     class="mt-2 p-2 border  border-l-5 text-sm border-[#17d06d] bg-[#edfff7] text-[#17d06d] {{ $class ?? '' }}">
-    {{ $message }}
-</div>
+@php
+    $totalMessages = 0; // Initialize message counter
+@endphp
+
+@foreach(session()->all() as $key => $message)
+    @if(in_array($key, ['success', 'error', 'info', 'warning']))
+        @if(is_string($message))
+            @php $totalMessages++; @endphp
+            @include("message.$key", [
+                'message' => $message,
+                'animationDelay' => $totalMessages * 500 // Delay based on message count
+            ])
+        @elseif(is_array($message))
+            @foreach($message as $index => $msg)
+                @php $totalMessages++; @endphp
+                @include("message.$key", [
+                    'message' => $msg,
+                    'animationDelay' => $totalMessages * 500 // Delay based on message count
+                ])
+            @endforeach
+        @endif
+    @endif
+@endforeach
+
+{{-- Trigger an animation based on total messages --}}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let totalMessages = {{ $totalMessages }};
+        if (totalMessages > 0) {
+            console.log(`Total messages: ${totalMessages}`);
+            // Add animation logic here, e.g.:
+            for (let i = 1; i <= totalMessages; i++) {
+                setTimeout(() => {
+                    console.log(`Animating message ${i}`);
+                    // Add specific animation logic, e.g., using a library like GSAP
+                }, i * 500); // Trigger animations with a delay
+            }
+        }
+    });
+</script>
