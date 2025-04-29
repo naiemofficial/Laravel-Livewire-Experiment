@@ -1,3 +1,4 @@
+{{--{{ dd($isValidGuest) }}--}}
 <div class="">
     <div class="ml-4 flex items-center md:ml-6">
         <div class="relative ml-3">

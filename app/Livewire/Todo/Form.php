@@ -2,7 +2,10 @@
 
 namespace App\Livewire\Todo;
 
+use App\Helpers\Response;
 use App\Http\Controllers\TodoController;
+use App\Http\Middleware\GuestAuth;
+use App\Http\Requests\TodoRequest;
 use App\Models\Guest;
 use Livewire\Component;
 
@@ -12,22 +15,25 @@ class Form extends Component
     public $description;
     public function store()
     {
+        // Suggestion from Middleware [Yes]
+        request()->attributes->set('suggestion', true);
 
-        $guestId = Guest::current() ? Guest::current()->id : null;
+        $response = app(GuestAuth::class)->handle(request(), function($request){
+            // Merge data into the request
+            $request->merge([
+                'title' => $this->title,
+                'description' => $this->description,
+                'guest_id' => Guest::current() ? Guest::current()->id : null
+            ]);
 
-        $requestData = [
-            'title' => $this->title,
-            'description' => $this->description,
-            'guest_id' => $guestId
-        ];
-
-        // Merge data into the request
-        request()->merge($requestData);
+            // Call the controller's store method with the current request
+            return app(TodoController::class)->store($request);
+        });
 
 
-        // Call the controller's store method with the current request
-        $response = app(TodoController::class)->store(request());
-        session()->flash($response->getData()->key, $response->getData()->message);
+        if($response->getData()){
+            Response::visualize('todo.form', $response);
+        }
 
         $this->dispatch('todo-created');
     }

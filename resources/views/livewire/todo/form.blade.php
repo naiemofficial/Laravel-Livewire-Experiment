@@ -19,12 +19,6 @@
         </div>
     </form>
 
-
-    @foreach(session()->all() as $key => $message)
-        @if(in_array($key, ['success', 'error', 'info', 'warning']))
-            @include("message.$key", ['message' => $message])
-        @endif
-    @endforeach
-
+    @include('message.index')
 
 </div>

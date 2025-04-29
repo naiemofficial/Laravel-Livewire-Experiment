@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\GuestAuth;
+use App\Http\Requests\TodoRequest;
 use App\Models\Guest;
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class TodoController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -31,13 +36,13 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         try {
-            $validatedData = $request->validate([
+            $validated = $request->validate([
                 'title' => ['required', 'string', 'max:255'],
                 'description' => ['required', 'string'],
                 'guest_id' => ['required', 'integer'],
             ]);
 
-            Todo::create($validatedData);
+            Todo::create($validated);
             return response()->json(['key' => 'success', 'message' => 'Todo created successfully.'], 201);
         } catch (\Exception $e) {
             return response()->json(['key' => 'error', 'message' => $e->getMessage()], 500);
