@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Cookie;
 use Illuminate\Database\Eloquent\Model;
-use \App\Models\Cookie;
 
 class Guest extends Model
 {
@@ -15,9 +15,9 @@ class Guest extends Model
     }
 
 
-    public static function isValid(string $cookie_value = null): bool
+    public static function isValid(Cookie $Cookie = null): bool
     {
-        $cookie_value = $cookie_value ?? Cookie::local(self::$cookie_name);
+        $cookie_value = ($Cookie instanceof Cookie) ? $Cookie->value : Cookie::local(self::$cookie_name);
         $cookie = Cookie::where('name', self::$cookie_name)
             ->where('value', $cookie_value)
             ->first();
@@ -28,9 +28,9 @@ class Guest extends Model
 
 
 
-    public static function current(string $cookie_value = null)
+    public static function current(Cookie $Cookie = null)
     {
-        $cookie_value = $cookie_value ?? Cookie::local(self::$cookie_name);
+        $cookie_value = ($Cookie instanceof Cookie) ? $Cookie->value : Cookie::local(self::$cookie_name);
         $cookie = Cookie::where('name', self::$cookie_name)
             ->where('value', $cookie_value)
             ->first();
@@ -41,6 +41,11 @@ class Guest extends Model
         }
 
         return null;
+    }
+
+    public function validity(): bool
+    {
+        return ($this->exists && $this->cookie()->exists());
     }
 
 

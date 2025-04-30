@@ -42,10 +42,15 @@ class TodoController extends Controller
                 'guest_id' => ['required', 'integer'],
             ]);
 
-            Todo::create($validated);
-            return response()->json(['key' => 'success', 'message' => 'Todo created successfully.'], 201);
+            $Todo = Todo::create($validated);
+            return response()->json([
+                'success' => 'Todo created successfully.',
+                'id' => $Todo->id
+            ], 201);
         } catch (\Exception $e) {
-            return response()->json(['key' => 'error', 'message' => $e->getMessage()], 500);
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
         }
 
 

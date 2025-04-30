@@ -56,16 +56,14 @@ class CookieController extends Controller
             // Create Cookie in the Browser
             Cookie::queue($validated['name'], $validated['value'], $this->calculateCookieLifespan($validated['expires_at'] ?? 0));
             return response()->json([
-                'key' => 'success',
-                'message' => 'Cookie added successfully',
+                'success' => 'Cookie added successfully',
                 'cookie' => $cookie
             ], 201);
 
         } catch (\Exception $e){
             Log:error("Cookie Creation: " . $e->getMessage());
             return response()->json([
-                'key' => 'error',
-                'message' => $e->getMessage()
+                'error' => $e->getMessage()
             ], 500);
         }
     }

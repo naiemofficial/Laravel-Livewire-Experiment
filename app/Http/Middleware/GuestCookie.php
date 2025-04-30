@@ -65,7 +65,7 @@ class GuestCookie
                 if($response->isSuccessful()){
                     return response()->json([
                         'type' => 'success',
-                        'cookie' => $Cookie->value,
+                        'cookie' => $Cookie->id,
                         'message' => 'Successfully created guest!',
                     ], 201);
                 } else {

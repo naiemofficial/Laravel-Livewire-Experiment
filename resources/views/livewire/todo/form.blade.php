@@ -14,11 +14,14 @@
                 wire:click="store"
                 class="w-full justify-center rounded-md bg-gradient-to-tr from-slate-800 to-slate-700 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer inline-flex items-center gap-x-1"
             >
-                <i class="fas fa-plus-circle"></i> Add another one
+                <i wire:loading.remove class="fas fa-plus-circle"></i>
+                <i wire:loading class="fas fa-circle-notch fa-spin"></i>
+                Submit
             </button>
         </div>
     </form>
 
-    @include('message.index')
+
+    @include('message.index', compact('__CLASS__'))
 
 </div>

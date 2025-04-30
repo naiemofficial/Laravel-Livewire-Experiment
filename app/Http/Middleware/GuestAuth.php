@@ -21,7 +21,7 @@ class GuestAuth
 
             $suggestion = $request->attributes->get('suggestion', false);
             if($suggestion){
-                $response['warning'] = 'Please submit your name';
+                $response['warning'] = 'Please submit your name first';
             }
 
             return response()->json($response, 401);

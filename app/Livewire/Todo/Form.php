@@ -11,6 +11,7 @@ use Livewire\Component;
 
 class Form extends Component
 {
+
     public $title;
     public $description;
     public function store()
@@ -31,14 +32,12 @@ class Form extends Component
         });
 
 
-        if($response->getData()){
-            Response::visualize('todo.form', $response);
-        }
+        Response::visualize(__CLASS__, $response, ['session-flash' => true]);
 
         $this->dispatch('todo-created');
     }
     public function render()
     {
-        return view('livewire.todo.form');
+        return view('livewire.todo.form', ['__CLASS__' => __CLASS__]);
     }
 }
