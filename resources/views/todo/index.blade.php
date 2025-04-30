@@ -4,7 +4,7 @@
             <h2 class="font-bold text-center mb-2">Add Todo</h2>
             <livewire:todo.form />
         </div>
-        <div class="p-8 w-2/3 h-full flex flex-col relative overflow-auto">
+        <div class="w-2/3 h-full flex flex-col relative">
             <livewire:todo.todo-list />
         </div>
     </div>

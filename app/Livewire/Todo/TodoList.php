@@ -9,7 +9,6 @@ use App\Models\Guest;
 
 class TodoList extends Component
 {
-    public $todos;
     public $currentGuest;
     public $isValidGuest = false;
     protected $listeners = ['todoAdded' => 'refreshTodos'];
@@ -20,11 +19,6 @@ class TodoList extends Component
     {
         $this->currentGuest = Guest::current();
         $this->isValidGuest = $this->currentGuest?->validity() ?? false;
-        if($this->isValidGuest){
-            $this->todos = $this->currentGuest->todos()->orderByDesc('created_at')->get();
-        } else {
-            $this->todos = collect();
-        }
         $this->action = 'mount';
     }
 
@@ -34,7 +28,6 @@ class TodoList extends Component
     #[On('todo-created')]
     public function refreshTodos(){
         $this->currentGuest = Guest::current();
-        $this->todos = $this->currentGuest?->todos()->orderByDesc('created_at')->get() ?? collect();
         $this->action = 'added';
     }
 
@@ -42,6 +35,7 @@ class TodoList extends Component
 
     public function render()
     {
-        return view('livewire.todo.list', ['action' => $this->action]);
+        $todos = $this->currentGuest?->todos()->orderByDesc('created_at')->paginate(10) ?? collect();
+        return view('livewire.todo.list', compact('todos'));
     }
 }
