@@ -6,9 +6,12 @@ use App\Models\Todo;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Guest;
+use Livewire\WithPagination;
 
 class TodoList extends Component
 {
+    use WithPagination;
+
     public $currentGuest;
     public $isValidGuest = false;
     protected $listeners = ['todoAdded' => 'refreshTodos'];
