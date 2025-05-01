@@ -5,7 +5,7 @@
                 <div wire:loading wire:target="submit">
                     <i class="inline-flex fas fa-circle-notch fa-spin text-[#fff]"></i>
                 </div>
-                <div class="min-w-[300px] flex items-center border rounded-lg px-3 py-1 pr-[6px] bg-gray-900 border-gray-900">
+                <div class="min-w-[300px] flex items-center border rounded-lg px-3 py-1 pr-[6px] bg-gray-900 border-gray-900 duration-300 ease-in-out {{ $isValidGuest ? 'shadow-[0_0_0_2px_#165dfb75]' : 'focus-within:shadow-[0_0_0_2px_#165dfb75]' }}">
                     <i class="min-w-[20px] fas {{ ($isValidGuest ? 'fa-user-pen' : 'fa-user') }} text-gray-400 mr-2"></i>
 
                     <input

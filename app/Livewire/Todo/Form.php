@@ -7,14 +7,15 @@ use App\Http\Controllers\TodoController;
 use App\Http\Middleware\GuestAuth;
 use App\Http\Requests\TodoRequest;
 use App\Models\Guest;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Form extends Component
 {
+    public $title = '';
+    public $description = '';
 
-    public $title;
-    public $description;
-    public function store()
+    public function submit()
     {
         // Suggestion from Middleware [Yes]
         request()->attributes->set('suggestion', true);
@@ -30,6 +31,10 @@ class Form extends Component
             // Call the controller's store method with the current request
             return app(TodoController::class)->store($request);
         });
+
+        if($response->isSuccessful()){
+            $this->reset();
+        }
 
 
         Response::visualize(__CLASS__, $response, ['session-flash' => true]);
