@@ -26,10 +26,11 @@ class Actions extends Component
 
         if($response->isSuccessful()){
             $this->todo = Todo::find($id);
+            $this->dispatch('refresh-todos');
         }
     }
     public function edit(int $id){
-        dd($id);
+        $this->dispatch('edit-todo', id: $id);
     }
     public function delete(int $id){
         dd($id);

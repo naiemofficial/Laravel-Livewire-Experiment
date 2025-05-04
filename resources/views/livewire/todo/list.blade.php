@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                            <p class="text-xs/5 text-gray-500">{{ $todo->created_at->diffForHumans() }}</p>
+                            <p class="text-xs/5 text-gray-500">{{ $todo->updated_at->diffForHumans() }}</p>
                             <livewire:todo.actions :todo="$todo" key="{{ $todo->id }}" />
                         </div>
                     </li>
