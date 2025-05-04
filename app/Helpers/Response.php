@@ -6,7 +6,7 @@ use Illuminate\Routing\ResponseFactory;
 
 class Response {
     // Prepare the JSON Response
-    public static function prepare(JsonResponse|ResponseFactory $response, array $preference = []){
+    public static function prepare(JsonResponse|ResponseFactory|array $response, array $preference = []){
         $storage = [
             'success'   => ['data' => [], 'alias' => ['successes']],
             'error'     => ['data' => [], 'alias' => ['errors']],
@@ -21,8 +21,18 @@ class Response {
 
         $final_storage = [];
 
-        if($response->getData()) {
+
+        if(is_object($response)){
             $response_data = $response->getData();
+        } else {
+            $response_data = isset($response['original']) ? $response['original'] : $response;
+        }
+
+        if(is_object($response_data)){
+            $response_data = (array) $response_data;
+        }
+
+        if(is_array($response_data)) {
             foreach($response_data as $key => $value){
                 $final_message = '';
                 $key_name = null;
@@ -120,17 +130,33 @@ class Response {
 
 
     // Flash the message to view in frontend
-    public static function visualize(string $template, JsonResponse|ResponseFactory|array $request, array $preference = [])
+    public static function visualize(string $className, JsonResponse|ResponseFactory|array $response, array $preference = [])
     {
-        if($request instanceof JsonResponse || $request instanceof ResponseFactory){
-            $processed_data = self::prepare($request, $preference);
-        } else {
-            $processed_data = $request;
+        /*
+         * $preference > template[] > [
+         *      type            > 'textOnly' or 'textonly'  // Only text (default or null // Animated message template)
+         *      wrapTextOnly    > true                      // Will have a wrapper <div> with message type e.g. success, error, ...
+         *      classes         > ..............            // class names
+         * ]
+         *
+         *
+         * */
+        if(!class_exists($className)){
+            throw new \InvalidArgumentException("Class {$className} not found");
         }
 
+
+        $location = $className;
+
+        $processed_data = self::prepare($response, $preference);
+
         if(boolval($preference['session-flash'] ?? null)){
-            session()->flash('template', $template);
-            session()->flash($template, $processed_data);
+            if(!empty($preference['template']['key'] ?? null)){
+                session()->flash('messageTemplate', $preference['template']);
+            }
+
+            session()->flash('messageLocation', $location);
+            session()->flash($location, $processed_data);
         }
     }
 }

@@ -77,7 +77,25 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'title'         => ['string', 'max:255'],
+                'description'   => ['string'],
+                'status'        => ['string'],
+            ]);
+
+            $todo->update($validated);
+
+            return response()->json([
+                'success' => 'Todo updated successfully',
+                'data' => $todo
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

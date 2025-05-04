@@ -37,12 +37,14 @@ class Form extends Component
         }
 
 
-        Response::visualize(__CLASS__, $response, ['session-flash' => true]);
+        Response::visualize($this::class, $response, ['session-flash' => true]);
 
-        $this->dispatch('todo-created');
+        $this->dispatch('refresh-todos'); // Todo  Created
     }
     public function render()
     {
-        return view('livewire.todo.form', ['__CLASS__' => __CLASS__]);
+        return view('livewire.todo.form', [
+            'className' => $this::class
+        ]);
     }
 }

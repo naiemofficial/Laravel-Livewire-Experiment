@@ -3,6 +3,7 @@
 namespace App\Livewire\Todo;
 
 use App\Models\Todo;
+use Carbon\Carbon;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Guest;
@@ -28,17 +29,13 @@ class TodoList extends Component
 
 
 
-    #[On('todo-created')]
-    public function refreshTodos(){
-        $this->currentGuest = Guest::current();
-        $this->action = 'added';
-    }
-
-
-
+    #[On('refresh-todos')]
     public function render()
     {
-        $todos = $this->currentGuest?->todos()->orderByDesc('created_at')->paginate(10) ?? collect();
-        return view('livewire.todo.list', compact('todos'));
+        $todos = Guest::current()?->todos()->orderByDesc('created_at')->paginate(10) ?? collect();
+        return view('livewire.todo.list', [
+            'todos' => $todos,
+            'className' => $this::class
+        ]);
     }
 }

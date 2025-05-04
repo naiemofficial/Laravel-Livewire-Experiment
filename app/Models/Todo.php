@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Todo extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['title', 'description', 'user_id', 'guest_id'];
+    protected $fillable = ['title', 'description', 'user_id', 'guest_id', 'status'];
 
     public function guest(){
         return $this->belongsTo(Guest::class);

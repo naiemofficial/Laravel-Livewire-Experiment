@@ -4,3 +4,7 @@
 .inner-col-pagination .buttons-wrapper {
     box-shadow: none;
 }
+
+.webkit-inline-box {
+    display: -webkit-inline-box;
+}

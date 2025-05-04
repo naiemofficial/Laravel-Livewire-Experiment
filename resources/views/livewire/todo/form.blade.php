@@ -23,6 +23,6 @@
     </form>
 
 
-    @include('message.index', compact('__CLASS__'))
+    @include('message.index', compact('className'))
 
 </div>
