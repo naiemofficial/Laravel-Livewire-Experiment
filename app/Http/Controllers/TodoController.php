@@ -75,7 +75,7 @@ class TodoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Todo $todo)
+    public function update(Request $request, Todo $Todo)
     {
         try {
             $validated = $request->validate([
@@ -84,11 +84,20 @@ class TodoController extends Controller
                 'status'        => ['string'],
             ]);
 
-            $todo->update($validated);
+            $updated_at = clone $Todo->updated_at;
+
+            $Todo->update($validated);
+
+            if($updated_at == $Todo->updated_at){
+                return response()->json([
+                    'info' => 'No changes made',
+                    'change' => false
+                ], 200);
+            }
 
             return response()->json([
                 'success' => 'Todo updated successfully',
-                'data' => $todo
+                'data' => $Todo
             ], 200);
 
         } catch (\Exception $e) {

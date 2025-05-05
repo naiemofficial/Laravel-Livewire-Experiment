@@ -1,6 +1,6 @@
 @include(
-    'message.textonly.template', [
+    'message.default.template', [
         'message' => $message,
-        'class' => "border-[#0074ff] bg-[#0092ff] text-[#0092ff]"
+        'class' => "border-[#0074ff] bg-[#e6f1ff] text-[#0092ff]"
     ]
 )

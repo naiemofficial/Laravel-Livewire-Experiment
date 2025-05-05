@@ -7,6 +7,6 @@
      x-transition:leave="transition ease-in duration-400 opacity-0 transform translate-x-4"
      x-transition:leave-start="opacity-100 transform translate-x-0"
      x-transition:leave-end="opacity-0 transform translate-x-4"
-     class="mt-2 p-2 border border-l-5 text-sm border-[#17d06d] bg-[#edfff7] text-[#17d06d] {{ $class ?? '' }}">
+     class="mt-2 p-2 border border-l-5 text-sm {{ $class ?? '' }}">
     {{ $message }}
 </div>

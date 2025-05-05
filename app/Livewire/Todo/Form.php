@@ -45,7 +45,9 @@ class Form extends Component
             return $response;
         });
 
-        if($response->isSuccessful()){
+        $changes_made = !(($response->getData()->change ?? true) === false);
+
+        if($response->isSuccessful() && $changes_made){
             $this->reset();
         }
 

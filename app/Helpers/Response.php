@@ -11,7 +11,7 @@ class Response {
             'success'   => ['data' => [], 'alias' => ['successes']],
             'error'     => ['data' => [], 'alias' => ['errors']],
             'warning'   => ['data' => [], 'alias' => ['warnings']],
-            'info'      => ['data' => [], 'alias' => ['infos']],
+            'info'      => ['data' => [], 'alias' => ['information', 'infos']],
             'danger'    => ['data' => [], 'alias' => ['dangers']],
             'primary'   => ['data' => [], 'alias' => ['primaries']],
             'secondary' => ['data' => [], 'alias' => ['secondaries']],
