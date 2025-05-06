@@ -7,7 +7,7 @@
     </div>
     <div class="h-full flex flex-col relative p-8 overflow-auto">
         @if($todos->isEmpty())
-            @include('todo.notfound')
+            <livewire:todo.notfound :trash="$trash" />
         @else
             <ul role="list" class="divide-y divide-gray-100 [&>li:first-child]:pt-0">
                 @foreach($todos as $index => $todo)
@@ -17,7 +17,7 @@
                         x-init="setTimeout(() => show = true, {{ $index * 80 }})"
                         x-show="show"
                         x-transition.duration.300ms
-                        class="flex justify-between gap-x-6 py-5 transition-[0.3s] {{($action == 'added' && $index == 0) ? 'opacity-0 opacity-100' : '' }}"
+                        class="flex justify-between gap-x-6 py-5 transition-[0.3s]"
                         style="transition: 0.3s"
                     >
                         <div class="flex min-w-0 gap-x-4">

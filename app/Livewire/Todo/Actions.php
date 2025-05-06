@@ -29,12 +29,36 @@ class Actions extends Component
             $this->dispatch('refresh-todos');
         }
     }
+
     public function edit(int $id){
         $this->dispatch('edit-todo', id: $id);
     }
-    public function delete(int $id){
-        dd($id);
+
+    public function delete(int $id, $action = null){
+        $response = app(GuestAuth::class)->handle(request(), function () use ($id, $action) {
+            $Todo = ($action == 'trash') ? Todo::onlyTrashed()->find($id) : Todo::find($id);
+            return app(TodoController::class)->destroy($Todo);
+        });
+
+        if($response->isSuccessful()){
+            $this->dispatch('refresh-message', response: $response);
+            $this->dispatch('refresh-trash-count');
+            $this->dispatch('refresh-todos');
+        }
     }
+
+    public function restore(int $id){
+        $response = app(GuestAuth::class)->handle(request(), function () use ($id) {
+            return app(TodoController::class)->restore(Todo::onlyTrashed()->find($id));
+        });
+
+        if($response->isSuccessful()){
+            $this->dispatch('refresh-message', response: $response);
+            $this->dispatch('refresh-trash-count');
+            $this->dispatch('refresh-todos');
+        }
+    }
+
     public function render()
     {
         return view('livewire.todo.actions');

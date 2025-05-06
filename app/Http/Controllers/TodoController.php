@@ -112,6 +112,39 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
-        //
+        try {
+            if($todo->trashed()){
+                $todo->forceDelete();
+                return response()->json([
+                    'success' => 'Todo deleted successfully.',
+                ], 200);
+            } else {
+                $todo->delete();
+                return response()->json([
+                    'pending' => 'Todo moved to trash',
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore(Todo $todo)
+    {
+        try {
+            $todo->restore();
+            return response()->json([
+                'success' => 'Todo restored successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
