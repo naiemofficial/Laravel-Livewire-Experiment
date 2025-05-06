@@ -9,13 +9,15 @@ use Livewire\Component;
 class Filter extends Component
 {
     public $deleted = 0;
+    public $todo_count;
     public $trash = false;
     public $data = ['filter' => [], 'order' => [], 'search' => []];
     public $searchText;
 
 
-    #[On('refresh-trash-count')]
+    #[On('refresh-todo-count')]
     public function mount(){
+        $this->todo_count = Todo::count();
         $this->deleted = Todo::onlyTrashed()->count();
     }
 

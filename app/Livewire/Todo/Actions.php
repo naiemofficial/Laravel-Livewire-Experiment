@@ -42,7 +42,7 @@ class Actions extends Component
 
         if($response->isSuccessful()){
             $this->dispatch('refresh-message', response: $response);
-            $this->dispatch('refresh-trash-count');
+            $this->dispatch('refresh-todo-count');
             $this->dispatch('refresh-todos');
         }
     }

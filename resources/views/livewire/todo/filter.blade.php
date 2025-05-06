@@ -7,6 +7,7 @@
     isSortFocused: false
 }" class="flex flex-col md:flex-row md:items-center space-x-3">
 
+    @if($todo_count > 0 || $deleted > 0)
     <!-- Search Input -->
     <input
         wire:model.live.debounce.250ms="searchText"
@@ -158,6 +159,8 @@
             <i class="fas fa-times"></i>
         </button>
     </div>
+    @endif
+
 
     <!-- Trash -->
     @if($deleted > -1)
