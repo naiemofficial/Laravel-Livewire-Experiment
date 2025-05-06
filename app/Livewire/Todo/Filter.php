@@ -10,6 +10,8 @@ class Filter extends Component
 {
     public $deleted = 0;
     public $trash = false;
+    public $data = ['filter' => [], 'order' => [], 'search' => []];
+    public $searchText;
 
 
     #[On('refresh-trash-count')]
@@ -17,9 +19,57 @@ class Filter extends Component
         $this->deleted = Todo::onlyTrashed()->count();
     }
 
+
+    public function updatedSearchText(){
+        if(empty($this->searchText)){
+            unset($this->data['search']['text']);
+        } else {
+            $this->data['search']['text'] = [
+                [
+                    'column'    => 'title',
+                    'value'     => "%$this->searchText%",
+                    'operator'  => 'LIKE',
+                    'boolean'   => 'OR'
+                ],
+                [
+                    'column'    => 'description',
+                    'value'     => "%$this->searchText%",
+                    'operator'  => 'LIKE',
+                    'boolean'   => 'OR'
+                ],
+            ];
+        }
+        $this->dispatch('filterTodo', data: $this->data);
+    }
+
+
+    public function searchStatus($status){
+        if(empty($status)){
+            unset($this->data['search']['status']);
+        } else {
+            $this->data['search']['status'] = [
+                'column'    => 'status',
+                'value'     => $status,
+                'operator'  => '=',
+                'boolean'   => 'AND'
+            ];
+        }
+        $this->dispatch('filterTodo', data: $this->data);
+    }
+
+    public function orderBy($column){
+        $this->data['order']['column'] = $column;
+        $this->dispatch('filterTodo', data: $this->data);
+    }
+
+    public function orderDirection($direction){
+        $this->data['order']['direction'] = $direction;
+        $this->dispatch('filterTodo', data: $this->data);
+    }
+
     public function filterTrash(){
-        $this->trash = !$this->trash;
-        $this->dispatch('filterTodo', data: ['filter' => ['trash' => $this->trash]]);
+        $this->data['filter']['trash'] = $this->trash = !$this->trash;
+        $this->dispatch('filterTodo', data: $this->data);
     }
     public function render()
     {

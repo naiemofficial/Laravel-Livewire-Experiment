@@ -31,7 +31,9 @@
                         </div>
 
                         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                            <p class="text-xs/5 text-gray-500">{{ $todo->updated_at->diffForHumans() }}</p>
+                            <div class="inline-flex items-center space-x-3 justify-center text-xs/5 text-gray-500">
+                                <span title="updated"><i class="fa-light fa-pen mr-1"></i> {{ $todo->updated_at->diffForHumans() }}</span>
+                            </div>
                             <livewire:todo.actions :todo="$todo" key="{{ $todo->id }}" />
                         </div>
                     </li>

@@ -6,13 +6,62 @@
     isOrderByFocused: false,
     isSortFocused: false
 }" class="flex flex-col md:flex-row md:items-center space-x-3">
+
     <!-- Search Input -->
     <input
-        id="search"
+        wire:model.live.debounce.250ms="searchText"
+        value="{{ old('searchText') }}"
         type="text"
         placeholder="Search..."
         class="border border-gray-300 rounded-sm px-3 py-[6px] text-xs w-full md:w-60 focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all duration-200"
     />
+
+    <!-- Status Dropdown -->
+    <div x-data="{ isStatusOpen: false, isStatusFocused: false, status: { name: null, value: null } }" class="relative">
+        <div
+            @click="isStatusOpen = !isStatusOpen"
+            @focus="isStatusFocused = true"
+            @blur="isStatusFocused = false"
+            tabindex="0"
+            :class="isStatusFocused ? 'focus:ring-2 focus:ring-blue-600 transition-all duration-200' : ''"
+            class="border border-gray-300 rounded-sm pr-7 px-3 py-[6px] text-xs w-auto flex items-center cursor-pointer space-x-1 min-w-[130px]"
+        >
+            <span :class="status.value ? '' : 'opacity-60'" x-html="status.value ? status.value : 'Status'"></span>
+            <i :class="status.value ? '' : 'opacity-60'" class="fas fa-caret-down text-xs"></i>
+        </div>
+
+        <div
+            x-show="isStatusOpen"
+            @click.away="isStatusOpen = false"
+            x-transition:enter="transition ease-out duration-300 transform"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            class="absolute mt-1 w-auto bg-white border border-gray-300 rounded-sm shadow-md z-10 w-full min-w-[130px] overflow-hidden"
+        >
+            <div wire:click="searchStatus('pending')" @click="status = { name: 'pending', value: '<i class=\'fa-light fa-hourglass-half\'></i> Pending' }; isStatusOpen = false"
+                 class="px-3 py-[6px] cursor-pointer hover:bg-blue-600 text-xs hover:text-white flex items-center space-x-2">
+                <i class="fa-light fa-hourglass-half"></i>
+                <span>Pending</span>
+            </div>
+            <div wire:click="searchStatus('completed')" @click="status = { name: 'completed', value: '<i class=\'fa-light fa-check-circle\'></i> Completed' }; isStatusOpen = false"
+                 class="px-3 py-[6px] cursor-pointer hover:bg-blue-600 text-xs hover:text-white flex items-center space-x-2">
+                <i class="fa-light fa-check-circle"></i>
+                <span>Completed</span>
+            </div>
+        </div>
+
+        <button wire:click="searchStatus(null)"
+            x-show="status.value"
+            @click="status = { name: null, value: null }"
+            class="clear-select"
+        >
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
 
     <!-- Order By Dropdown -->
     <div class="relative">
@@ -22,44 +71,47 @@
             @blur="isOrderByFocused = false"
             tabindex="0"
             :class="isOrderByFocused ? 'focus:ring-2 focus:ring-blue-600 transition-all duration-200' : ''"
-            class="border border-gray-300 rounded-sm pr-7 px-3 py-[6px] text-xs w-auto flex items-center cursor-pointer space-x-1 min-w-[140px]"
+            class="border border-gray-300 rounded-sm pr-7 px-3 py-[6px] text-xs w-auto flex items-center cursor-pointer space-x-1 min-w-[150px]"
         >
-            <span x-html="orderBy.value ? orderBy.value : 'Order By'"></span>
-            <i class="fas fa-caret-down text-xs"></i>
+            <span :class="status.value ? '' : 'opacity-60'" x-html="orderBy.value ? orderBy.value : 'Order By'"></span>
+            <i :class="status.value ? '' : 'opacity-60'" class="fas fa-caret-down text-xs"></i>
         </div>
 
         <div x-show="isOrderByOpen" @click.away="isOrderByOpen = false"
-             x-transition:enter="transition ease-out duration-300 transform"
-             x-transition:enter-start="opacity-0 scale-95"
-             x-transition:enter-end="opacity-100 scale-100"
-             x-transition:leave="transition ease-in duration-200"
-             x-transition:leave-start="opacity-100 scale-100"
-             x-transition:leave-end="opacity-0 scale-95"
-             class="absolute mt-1 w-auto bg-white border border-gray-300 rounded-sm shadow-md z-10 w-full min-w-[140px] overflow-hidden"
+            x-transition:enter="transition ease-out duration-300 transform"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            class="absolute mt-1 w-auto bg-white border border-gray-300 rounded-sm shadow-md z-10 w-full min-w-[140px] overflow-hidden"
         >
-            <div @click="orderBy = { name: 'name', value: '<i class=\'fas fa-user\'></i> Name' }; isOrderByOpen = false"
+            <div wire:click="orderBy('title')"
+                 @click="orderBy = { name: 'title', value: '<i class=\'fa-regular fa-text\'></i> Title' }; isOrderByOpen = false"
                  class="px-3 py-[6px] cursor-pointer hover:bg-blue-600 text-xs hover:text-white flex items-center space-x-2">
-                <i class="fas fa-user"></i>
-                <span>Name</span>
+                <i class="fa-regular fa-text"></i>
+                <span>Title</span>
             </div>
-            <div @click="orderBy = { name: 'date', value: '<i class=\'fas fa-calendar-alt\'></i> Date' }; isOrderByOpen = false"
+            <div wire:click="orderBy('created_at')"
+                 @click="orderBy = { name: 'created_at', value: '<i class=\'fa-light fa-calendar-plus\'></i> Creation Date' }; isOrderByOpen = false"
                  class="px-3 py-[6px] cursor-pointer hover:bg-blue-600 text-xs hover:text-white flex items-center space-x-2">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Date</span>
+                <i class="fa-light fa-calendar-plus"></i>
+                <span>Creation Date</span>
             </div>
-            <div @click="orderBy = { name: 'status', value: '<i class=\'fas fa-info-circle\'></i> Status' }; isOrderByOpen = false"
+            <div wire:click="orderBy('updated_at')"
+                 @click="orderBy = { name: 'updated_at', value: '<i class=\'fa-light fa-calendar-pen\'></i> Update Date' }; isOrderByOpen = false"
                  class="px-3 py-[6px] cursor-pointer hover:bg-blue-600 text-xs hover:text-white flex items-center space-x-2">
-                <i class="fas fa-info-circle"></i>
-                <span>Status</span>
+                <i class="fa-light fa-calendar-pen"></i>
+                <span>Update Date</span>
             </div>
         </div>
 
-        <button
+        <button wire:click="orderBy(null)"
             x-show="orderBy.value"
             @click="orderBy = { name: null, value: null }"
             class="clear-select"
         >
-            <i class="fas fa-times"></i>
+            <i wire:model class="fas fa-times"></i>
         </button>
     </div>
 
@@ -73,8 +125,8 @@
             :class="isSortFocused ? 'focus:ring-2 focus:ring-blue-600 transition-all duration-200' : ''"
             class="border border-gray-300 rounded-sm pr-7 px-3 py-[6px] text-xs w-auto flex items-center cursor-pointer space-x-1 min-w-[140px]"
         >
-            <span x-html="sort.value ? sort.value : 'Sort'"></span>
-            <i class="fas fa-caret-down text-xs"></i>
+            <span :class="status.value ? '' : 'opacity-60'" x-html="sort.value ? sort.value : 'Sort'"></span>
+            <i :class="status.value ? '' : 'opacity-60'" class="fas fa-caret-down text-xs"></i>
         </div>
 
         <div x-show="isSortOpen" @click.away="isSortOpen = false"
@@ -86,19 +138,19 @@
              x-transition:leave-end="opacity-0 scale-95"
              class="absolute mt-1 w-auto bg-white border border-gray-300 rounded-sm shadow-md z-10 w-full min-w-[140px] overflow-hidden"
         >
-            <div @click="sort = { direction: 'asc', value: '<i class=\'fas fa-sort-amount-up\'></i> Ascending' }; isSortOpen = false"
+            <div wire:click="orderDirection('asc')" @click="sort = { direction: 'asc', value: '<i class=\'fa-light fa-arrow-up-wide-short\'></i> Ascending' }; isSortOpen = false"
                  class="px-3 py-[6px] cursor-pointer hover:bg-blue-600 text-xs hover:text-white flex items-center space-x-2">
-                <i class="fas fa-sort-amount-up"></i>
+                <i class="fa-light fa-arrow-up-wide-short"></i>
                 <span>Ascending</span>
             </div>
-            <div @click="sort = { direction: 'desc', value: '<i class=\'fas fa-sort-amount-down\'></i> Descending' }; isSortOpen = false"
+            <div wire:click="orderDirection('desc')" @click="sort = { direction: 'desc', value: '<i class=\'fa-light fa-arrow-down-short-wide\'></i> Descending' }; isSortOpen = false"
                  class="px-3 py-[6px] cursor-pointer hover:bg-blue-600 text-xs hover:text-white flex items-center space-x-2">
-                <i class="fas fa-sort-amount-down"></i>
+                <i class="fa-light fa-arrow-down-short-wide"></i>
                 <span>Descending</span>
             </div>
         </div>
 
-        <button
+        <button wire:click="orderDirection(null)"
             x-show="sort.value"
             @click="sort = { direction: null, value: null }"
             class="clear-select"

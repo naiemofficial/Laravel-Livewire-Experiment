@@ -25,21 +25,44 @@ class Filter
     {
         if(empty($searches)) return $query;
 
-        foreach ($searches as $search) {
-            if (is_array($search) && isset($search['column'], $search['value'])) {
-                $column     = $search['column'];
-                $value      = $search['value'];
-                $operator   = $search['operator'] ?? '=';
-                $boolean    = $search['boolean']   ?? 'and';
+        $searches = self::search_values($searches);
 
-                $query->where($column, $operator, $value, $boolean);
-            } else {
-                $query->where(function ($query) use ($search) {
-                    return $this->prepareSearch($query, $search);
-                });
+        foreach ($searches as $index => $search) {
+            if (is_array($search)) {
+                if(isset($search['column'], $search['value'])){
+
+                    $column     = $search['column'];
+                    $value      = $search['value'];
+                    $operator   = $search['operator']   ?? '=';
+                    $boolean    = $search['boolean']    ?? 'AND';
+
+                    if($index > 0 && $boolean == 'OR'){
+                        $query->orWhere($column, $operator, $value);
+                    } else {
+                        $query->where($column, $operator, $value);
+                    }
+
+
+                } else {
+                    $query->where(function ($query) use ($search) {
+                        return self::search($query, $search);
+                    });
+                }
             }
         }
 
         return $query;
+    }
+
+    public static function search_values($array) {
+        $result = [];
+        foreach ($array as $key => $value) {
+            if(is_array($value)){
+                $result[] = self::search_values($value);
+            } else if(!empty($value)){
+                $result[$key] = $value;
+            }
+        }
+        return $result;
     }
 }

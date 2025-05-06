@@ -10,7 +10,7 @@
                     class="current-status inline-flex items-center px-2 py-[2px] text-[12px] border border-gray-300 rounded-l-sm focus:outline-none transition ease-in-out duration-150 cursor-pointer capitalize
                            {{ $todo->status === 'pending' ? 'text-yellow-600 hover:bg-yellow-600 hover:text-white hover:border-yellow-600' : '' }}
                            {{ $todo->status === 'completed' ? 'text-green-600 hover:bg-green-600 hover:text-white hover:border-green-600' : '' }}">
-                    <i class="{{ $todo->status === 'pending' ? 'fas fa-exclamation-circle mr-1' : ($todo->status === 'completed' ? 'fas fa-check-circle mr-1' : 'fas fa-caret-down ml-2') }}"></i>
+                    <i class="{{ $todo->status === 'pending' ? 'fa-light fa-hourglass-start mr-1' : ($todo->status === 'completed' ? 'fa-solid fa-check-circle mr-1' : 'fas fa-caret-down ml-2') }}"></i>
                     {{ $todo->status }}
                 </span>
 

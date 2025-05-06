@@ -18,13 +18,19 @@ class TodoList extends Component
     ];
 
     public $filter = [];
+    public $search = [];
+
+
 
     #[On('filterTodo')]
     public function filterTodo($data)
     {
+
+        $this->search = $data['search'] ?? [];
+
         $this->filter = Filter::prepare($data);
         $trash = $this->filter['trash'];
-        if($trash === true || $trash === false){
+        if($trash === true || $trash === false){ // Not NULL
             $this->resetPage();
         }
     }
@@ -37,7 +43,16 @@ class TodoList extends Component
         $todos = Guest::current()?->todos() ?? Todo::query();
 
         extract(empty($this->filter) ? Filter::prepare([]) : $this->filter);
+
+        // Filter: trash
         if($trash) $todos->onlyTrashed();
+
+
+        // Search Term
+        if(!empty($this->search)){
+            $todos = Filter::search($todos, $this->search);
+        }
+
         $todos = $todos->orderBy($order_column, $order_direction)->paginate($per_page);
 
 
