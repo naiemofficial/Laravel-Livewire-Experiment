@@ -1,5 +1,5 @@
 <div>
-    <h2 class="font-bold text-center mb-2">{{ $form == 'edit' ? 'Edit' : 'Add' }} Todo</h2>
+    <h2 class="font-bold text-center mb-3">{{ $form == 'edit' ? 'Edit' : 'Add' }} Todo</h2>
     <form class="space-y-6 w-full" wire:submit.prevent="submit">
         <!-- Title Field -->
         <input type="text" wire:model="title" wire:loading.attr="disabled" class="w-full text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm bg-white border rounded-sm border-gray-300 px-4 py-3 duration-200" placeholder="Title"/>

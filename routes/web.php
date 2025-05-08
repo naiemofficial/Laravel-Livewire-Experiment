@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CookieController;
-use \App\Http\Controllers\TodoController;
+use App\Http\Controllers\TodoController;
+use App\Http\Controllers\MediaController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,8 +13,7 @@ Route::get('/', function () {
 
 
 Route::get('/todo', [TodoController::class, 'index']);
-
-Route::post('/todo', [TodoController::class, 'store']);
+Route::get('/media', [MediaController::class, 'index']);
 
 
 

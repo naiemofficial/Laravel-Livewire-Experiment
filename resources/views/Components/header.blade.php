@@ -1,7 +1,8 @@
 @php
     $menus = [
         '/' => 'Home',
-        'todo' => 'Todo'
+        'todo' => 'Todo',
+        'media' => 'Media'
     ];
 @endphp
 
