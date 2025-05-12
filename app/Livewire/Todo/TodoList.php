@@ -3,12 +3,12 @@
 namespace App\Livewire\Todo;
 
 use App\Models\Todo;
-use Carbon\Carbon;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Guest;
 use Livewire\WithPagination;
 use App\Helpers\Filter;
+use Illuminate\Database\Eloquent\Collection;
 
 class TodoList extends Component
 {
@@ -41,7 +41,7 @@ class TodoList extends Component
     public function render()
     {
         // Todos
-        $todos = Guest::current()?->todos() ?? Todo::query();
+        $todos = Guest::current()?->todos() ?? new Collection();
 
         extract(empty($this->filter) ? Filter::prepare([]) : $this->filter);
 
@@ -53,7 +53,7 @@ class TodoList extends Component
             $todos = Filter::search($todos, $this->search);
         }
 
-        $todos = $todos->orderBy($order_column, $order_direction)->paginate($per_page);
+        $todos = ($todos->count() > 0) ? $todos->orderBy($order_column, $order_direction)->paginate($per_page) : $todos;
 
 
         return view('livewire.todo.list', [
