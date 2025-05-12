@@ -53,8 +53,10 @@ class Form extends Component
 
         Response::visualize($this::class, $response, ['session-flash' => true]);
 
-        $this->dispatch('refresh-todos'); // Todo  Created
-        $this->dispatch('refresh-todo-count');
+        if($response->isSuccessful()){
+            $this->dispatch('refresh-todos'); // Todo  Created
+            $this->dispatch('refresh-todo-count');
+        }
     }
 
     #[On('edit-todo')]

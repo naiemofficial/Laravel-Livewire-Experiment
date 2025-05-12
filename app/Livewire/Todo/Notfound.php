@@ -4,7 +4,7 @@ namespace App\Livewire\Todo;
 
 use Livewire\Component;
 
-class NotFound extends Component
+class Notfound extends Component
 {
     public $trash;
     public function render()
