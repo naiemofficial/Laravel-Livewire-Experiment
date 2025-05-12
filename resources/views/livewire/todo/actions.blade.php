@@ -1,5 +1,5 @@
 <div class="inline-flex items-center mt-2">
-    <span wire:loading wire:target="mark" class="inline-flex mr-2">
+    <span wire:loading wire:target="mark, delete, restore" class="inline-flex mr-2">
         <i class="inline-flex fas fa-circle-notch fa-spin"></i>
     </span>
     <div class="inline-flex rounded-md">

@@ -14,13 +14,16 @@ class Filter extends Component
     public $data = ['filter' => [], 'order' => [], 'search' => []];
     public $searchText;
 
-
-    #[On('refresh-todo-count')]
     public function mount(){
         $this->todo_count = Todo::count();
         $this->deleted = Todo::onlyTrashed()->count();
     }
 
+    #[On('refresh-todo-count')]
+    public function refreshTodoCount(){
+        $this->todo_count = Todo::count();
+        $this->deleted = Todo::onlyTrashed()->count();
+    }
 
     public function updatedSearchText(){
         if(empty($this->searchText)){
