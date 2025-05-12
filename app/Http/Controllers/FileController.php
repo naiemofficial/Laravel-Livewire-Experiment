@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Media;
 use Illuminate\Http\Request;
 
-class MediaController extends Controller
+class FileController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('media.index');
+        return view('file.index');
     }
 
     /**

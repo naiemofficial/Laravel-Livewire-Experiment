@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CookieController;
 use App\Http\Controllers\TodoController;
-use App\Http\Controllers\MediaController;
+use App\Http\Controllers\FileController;
 
 
 Route::get('/', function () {
@@ -12,8 +12,8 @@ Route::get('/', function () {
 
 
 
-Route::get('/todo', [TodoController::class, 'index']);
-Route::get('/media', [MediaController::class, 'index']);
+Route::get('/todos', [TodoController::class, 'index']);
+Route::get('/files', [FileController::class, 'index']);
 
 
 

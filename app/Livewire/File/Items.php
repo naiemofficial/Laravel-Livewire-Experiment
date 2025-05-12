@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Media;
+namespace App\Livewire\File;
 
 use Livewire\Component;
 
@@ -8,6 +8,6 @@ class Items extends Component
 {
     public function render()
     {
-        return view('livewire.media.items');
+        return view('livewire.file.items');
     }
 }
