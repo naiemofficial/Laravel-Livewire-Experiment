@@ -22,7 +22,7 @@
                         style="transition: 0.3s"
                     >
                         <div class="flex min-w-0 gap-x-4">
-                            <span class="inline-flex items-center justify-center h-[48px] w-[48px] border border-double border-gray-200 rounded-sm text-gray-300 bg-gray-100 text-xl">
+                            <span class="inline-flex items-center justify-center h-[48px] w-[48px] min-w-[48px] border border-double border-gray-200 rounded-sm text-gray-300 bg-gray-100 text-xl">
                                 <i class="fa-duotone fa-solid fa-user"></i>
                             </span>
                             <div class="min-w-0 flex-auto">
