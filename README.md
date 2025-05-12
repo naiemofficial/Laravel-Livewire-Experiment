@@ -6,7 +6,8 @@ It's a simple and interactive **To-Do Application** built using **Laravel** and 
 
 <p align="center">Experience the application live: <img src="https://user-images.githubusercontent.com/34242279/198895174-067df900-8463-4455-9b1f-13a9b7e9ae6e.svg" height="14" width="14"/> <a href="https://livewire.up.railway.app/" target="_blank">https://livewire.up.railway.app/</a></p>
 
-<br><br>
+<br>
+
 ## Features
 
 - **Create, Read, Update, Delete** tasks with real-time interactivity using Livewire.
@@ -16,7 +17,8 @@ It's a simple and interactive **To-Do Application** built using **Laravel** and 
 - Minimalistic and user-friendly interface.
 - Focus on Livewire's real-time capabilities for a dynamic user experience.
 
-<br><br>
+<br>
+
 ## How to Use
 
 1. **User Onboarding**  
@@ -25,9 +27,9 @@ It's a simple and interactive **To-Do Application** built using **Laravel** and 
 2. **Adding a Todo**  
    Once you've submitted your name, you can begin adding tasks. Enter the task details in the provided form, and the new task will be added to your list.
 
-3. **Managing Todo(s)**  
-   - **Update Task Status**: Mark tasks as **Pending** or **Completed**.
-   - **Edit Tasks**: Modify existing tasks directly in the application.
-   - **Soft Delete Tasks**: Tasks are not permanently deleted but moved to a "trash" state.
-   - **Restore Tasks**: Recover tasks from the trash with a single click.
-   - **Permanent Delete**: Permanently remove tasks from the database.
+3. **Managing Todo(s)**
+    - **Update Task Status**: Mark tasks as **Pending** or **Completed**.
+    - **Edit Tasks**: Modify existing tasks directly in the application.
+    - **Soft Delete Tasks**: Tasks are not permanently deleted but moved to a "trash" state.
+    - **Restore Tasks**: Recover tasks from the trash with a single click.
+    - **Permanent Delete**: Permanently remove tasks from the database.
