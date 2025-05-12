@@ -5,6 +5,7 @@
             <i class="inline-flex fas fa-circle-notch fa-spin text-blue-600"></i>
         </span>
     </div>
+
     <div class="h-full flex flex-col relative p-8 overflow-auto">
         @if($todos->count() < 1)
             <livewire:todo.notfound :trash="$trash" wire:key="{{ rand(1, 1000) }}" />
