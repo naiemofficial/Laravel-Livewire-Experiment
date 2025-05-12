@@ -2,7 +2,6 @@
     $menus = [
         '/' => 'Home',
         'todos' => 'Todos',
-        'files' => 'Files'
     ];
 @endphp
 

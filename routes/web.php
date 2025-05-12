@@ -7,16 +7,8 @@ use App\Http\Controllers\FileController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/todos');
 });
 
 
-
 Route::get('/todos', [TodoController::class, 'index']);
-Route::get('/files', [FileController::class, 'index']);
-
-
-
-
-Route::get("/cookie/{name}", [CookieController::class, 'show'])->name('cookie.show');
-Route::post("/cookie", [CookieController::class, 'store'])->name('cookie.store');

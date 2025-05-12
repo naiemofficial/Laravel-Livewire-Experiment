@@ -59,7 +59,7 @@ class TodoList extends Component
         return view('livewire.todo.list', [
             'todos' => $todos,
             'className' => $this::class,
-            'trash' => true
+            'trash' => $trash
         ]);
     }
 }

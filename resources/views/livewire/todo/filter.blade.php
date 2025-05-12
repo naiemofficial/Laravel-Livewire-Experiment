@@ -163,18 +163,18 @@
 
 
     <!-- Trash -->
-    @if($deleted > -1)
-    <button
-            type="submit"
-            wire:click="filterTrash"
-            wire:loading.attr="disabled"
-            class="group {{ $trash ? 'bg-red-600 text-white hover:bg-red-600 hover:text-white' : '' }} w-[110px] border border-red-600 text-red-600 px-3 py-[6px] rounded-sm hover:bg-[#ffeef5] focus:outline-none focus:ring-2 focus:ring-red-500 text-xs cursor-pointer disabled:cursor-not-allowed transition-all duration-200 relative"
-        >
-        <i class="fas fa-trash-alt"></i> Trash
-        <span class="{{ $deleted >= 10 ? 'rounded-sm px-[5px]' : 'rounded-full' }} top-[-5px] right-[-5px] inline-flex items-center justify-center bg-[#ffd3e5] text-red-600 h-[18px] min-w-[18px] transition-colors duration-200">
-            {{ $deleted }}
-        </span>
-    </button>
+    @if($deleted > 0)
+        <button
+                type="submit"
+                wire:click="filterTrash"
+                wire:loading.attr="disabled"
+                class="group {{ $trash ? 'bg-red-600 text-white hover:bg-red-600 hover:text-white' : '' }} w-[110px] border border-red-600 text-red-600 px-3 py-[6px] rounded-sm hover:bg-[#ffeef5] focus:outline-none focus:ring-2 focus:ring-red-500 text-xs cursor-pointer disabled:cursor-not-allowed transition-all duration-200 relative"
+            >
+            <i class="fas fa-trash-alt"></i> Trash
+            <span class="{{ $deleted >= 10 ? 'rounded-sm px-[5px]' : 'rounded-full' }} top-[-5px] right-[-5px] inline-flex items-center justify-center bg-[#ffd3e5] text-red-600 h-[18px] min-w-[18px] transition-colors duration-200">
+                {{ $deleted }}
+            </span>
+        </button>
     @endif
 
 </div>
