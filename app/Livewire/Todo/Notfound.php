@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Todo;
 
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Notfound extends Component

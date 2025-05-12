@@ -5,7 +5,7 @@
     isSortOpen: false,
     isOrderByFocused: false,
     isSortFocused: false
-}" class="flex flex-col md:flex-row md:items-center space-x-3">
+}" class="flex md:flex-row md:items-center space-x-3 flex-1 justify-end">
 
     @if($todo_count > 0 || $deleted > 0)
         <!-- Search Input -->

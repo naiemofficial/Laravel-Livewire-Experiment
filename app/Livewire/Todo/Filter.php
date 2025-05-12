@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Todo;
 
+use App\Models\Guest;
 use App\Models\Todo;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -21,8 +22,14 @@ class Filter extends Component
 
     #[On('refresh-todo-count')]
     public function refreshTodoCount(){
-        $this->todo_count = Todo::count();
-        $this->deleted = Todo::onlyTrashed()->count();
+        $todos = Guest::current()?->todos() ?? Todo::query();
+        $this->todo_count = $todos->count();
+        $this->deleted = $todos->onlyTrashed()->count();
+
+        if($this->todo_count == 0 && $this->deleted == 0){
+            $this->data['filter']['trash'] = false;
+            $this->filterTrash();
+        }
     }
 
     public function updatedSearchText(){

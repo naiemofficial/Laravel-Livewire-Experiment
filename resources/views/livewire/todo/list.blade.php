@@ -6,8 +6,8 @@
         </span>
     </div>
     <div class="h-full flex flex-col relative p-8 overflow-auto">
-        @if($todos->isEmpty())
-            <livewire:todo.notfound :trash="$trash" />
+        @if($todos->count() < 1)
+            <livewire:todo.notfound :trash="$trash" wire:key="{{ rand(1, 1000) }}" />
         @else
             <ul role="list" class="divide-y divide-gray-100 [&>li:first-child]:pt-0">
                 @foreach($todos as $index => $todo)

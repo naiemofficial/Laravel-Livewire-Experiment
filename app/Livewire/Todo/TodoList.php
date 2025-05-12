@@ -29,6 +29,7 @@ class TodoList extends Component
         $this->search = $data['search'] ?? [];
 
         $this->filter = Filter::prepare($data);
+
         $trash = $this->filter['trash'];
         if($trash === true || $trash === false){ // Not NULL
             $this->resetPage();
@@ -46,7 +47,6 @@ class TodoList extends Component
 
         // Filter: trash
         if($trash) $todos->onlyTrashed();
-
 
         // Search Term
         if(!empty($this->search)){
