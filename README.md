@@ -1,61 +1,33 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Livewire Experiment
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+It's a simple and interactive **To-Do Application** built using **Laravel** and **Livewire**. In this app, Livewire is used to enable interactions like a single page without requiring refreshes. This application demonstrates CRUD operations with support for **soft deletes**, making it easy to manage and recover deleted items.
+<br><br>
+<img src="https://github.com/user-attachments/assets/681ee7f6-7aa4-465f-84fb-de89668e6ff5" />
 
-## About Laravel
+<p align="center">Experience the application live: <img src="https://user-images.githubusercontent.com/34242279/198895174-067df900-8463-4455-9b1f-13a9b7e9ae6e.svg" height="14" width="14"/> <a href="https://livewire.up.railway.app/" target="_blank">https://livewire.up.railway.app/</a></p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<br><br>
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Create, Read, Update, Delete** tasks with real-time interactivity using Livewire.
+- **Soft Delete** support to restore accidentally deleted tasks.
+- Manage task status by updating it to **Pending** or **Completed**.
+- Edit, delete, or permanently remove tasks.
+- Minimalistic and user-friendly interface.
+- Focus on Livewire's real-time capabilities for a dynamic user experience.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<br><br>
+## How to Use
 
-## Learning Laravel
+1. **User Onboarding**  
+   To start using the application, submit your **name** from the top right corner. This step sets up the user environment for creating todo(s).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2. **Adding a Todo**  
+   Once you've submitted your name, you can begin adding tasks. Enter the task details in the provided form, and the new task will be added to your list.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+3. **Managing Todo(s)**  
+   - **Update Task Status**: Mark tasks as **Pending** or **Completed**.
+   - **Edit Tasks**: Modify existing tasks directly in the application.
+   - **Soft Delete Tasks**: Tasks are not permanently deleted but moved to a "trash" state.
+   - **Restore Tasks**: Recover tasks from the trash with a single click.
+   - **Permanent Delete**: Permanently remove tasks from the database.
