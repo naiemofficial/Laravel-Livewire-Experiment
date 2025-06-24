@@ -22,7 +22,7 @@
                 @endphp
                 {{ $page }}
             </h1>
-            <div class="header-right inline-flex items-center flex-1">
+            <div class="header-right inline-flex items-center flex-1 justify-end">
                 {{ $headerRight ?? '' }}
             </div>
         </div>

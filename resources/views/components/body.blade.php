@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>Livewire</title>
-    <link rel="shortcut icon" href="{{ url("/livewire.png")  }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ url("/assets/icons/logo.png")  }}" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <link href="{{ asset('assets/css/fontawesome.css') }}" rel="stylesheet">

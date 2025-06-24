@@ -16,15 +16,16 @@ class Filter extends Component
     public $searchText;
 
     public function mount(){
-        $this->todo_count = Todo::count();
-        $this->deleted = Todo::onlyTrashed()->count();
+        $todos = Guest::current()?->todos();
+        $this->todo_count = $todos?->count() ?? 0;
+        $this->deleted = $todos?->onlyTrashed()->count() ?? 0;
     }
 
     #[On('refresh-todo-count')]
     public function refreshTodoCount(){
-        $todos = Guest::current()?->todos() ?? Todo::query();
-        $this->todo_count = $todos->count();
-        $this->deleted = $todos->onlyTrashed()->count();
+        $todos = Guest::current()?->todos();
+        $this->todo_count = $todos->count() ?? 0;
+        $this->deleted = $todos->onlyTrashed()->count() ?? 0;
 
         if($this->todo_count == 0 && $this->deleted == 0){
             $this->data['filter']['trash'] = false;
