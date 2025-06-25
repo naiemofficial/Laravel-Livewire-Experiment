@@ -3,8 +3,8 @@
 It's a simple and interactive **To-Do Application** built using **Laravel** and **Livewire**. In this app, Livewire is used to enable interactions like a single page without requiring refreshes. This application demonstrates CRUD operations with support for **soft deletes**, making it easy to manage and recover deleted items.
 <br><br>
 <img src="https://github.com/user-attachments/assets/d3179eaa-deb4-4791-ac51-02614f6cdefb" alt="HomePage" />
-php
-<p align="center">Experience the application live: <img src="https://user-images.githubusercontent.com/34242279/198895174-067df900-8463-4455-9b1f-13a9b7e9ae6e.svg" height="14" width="14"/> <a href="https://livewire.up.railway.app/" target="_blank">https://livewire.up.railway.app/</a></p>
+
+<p align="center">Experience the application live: <img src="https://user-images.githubusercontent.com/34242279/198895174-067df900-8463-4455-9b1f-13a9b7e9ae6e.svg" height="14" width="14"/> <a href="https://project.naiem.info/livewire/" target="_blank">https://project.naiem.info/livewire/</a></p>
 
 <br>
 
