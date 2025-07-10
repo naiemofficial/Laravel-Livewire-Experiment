@@ -1,6 +1,5 @@
 @php
     $menus = [
-        '/' => 'Home',
         'todos' => 'Todos',
     ];
 @endphp
